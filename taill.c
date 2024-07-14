@@ -3,85 +3,56 @@
 #include <string.h>
 #include "tail.h"
 
-void tailN(FILE** f,char *argv,char *argt)
+FILE* open(char* argv)
 {
-	char car;
-	int n ;
-	int i ;
-	int j ;
-	int k ;
-
-	*f=fopen(argt,"r");
-
-	k = atoi(argv);
-
-	if(*f==NULL)
+	FILE* f = NULL ;
+	f=fopen(argv,"r");
+	if(f==NULL)
 	{
 		printf("Erreur lors de l'ouverture");
 		exit (0);
 	}
-
-	else
-	{
-		while(!feof(*f))
-		{
-			if(fgetc(*f)=='\n')
-			{
-				n++;
-			}
-		}
-
-		j=n-k;
-		rewind(*f);
-		
-		while(!feof(*f))
-		{
-			if(fgetc(*f)=='\n')
-			{
-				i++;
-				if(i>=j)
-				{
-					while(!feof(*f))
-					{
-						car=fgetc(*f);
-						printf("%c",car);
-					}
-				}
-			}
-		}
-
-		fclose(*f);
-	}
+	return f ;
 }
 
-void tailC(FILE** f,char *argv , char *argt)
+void close (FILE** f)
 {
-	char car;
-	char cara;
-	int n ;
-	int i ;
-	int j ;
-	int k ;
-	k = atoi(argv);
+	fclose(*f);
+	printf("success\n");
+}
 
-	*f=fopen(argt,"r");
-	if(*f==NULL)
-	{
-		printf("Erreur lors de l'ouverture");
-		exit (0);
-	}
+int countline (FILE** f)
+{
+	int n ;
 	
-	else
+	while(!feof(*f))
 	{
-		while((cara=fgetc(*f))!=EOF)
+		if(fgetc(*f)=='\n')
 		{
 			n++;
 		}
+		printf("%d\n",n);
+	}
+	
+	return n ;
 
-		j=n-k;
-		rewind(*f);
+}
 
-		while((cara=fgetc(*f))!=EOF)
+void tailN(FILE** f,char *argv,int n)
+{
+	char car;
+
+	int i ;
+	int j ;
+	int k ;
+
+	k = atoi(argv);
+	j=n-k;
+	///rewind(*f);
+	
+	while(!feof(*f))
+	{
+		if(fgetc(*f)=='\n')
 		{
 			i++;
 			if(i>=j)
@@ -93,82 +64,59 @@ void tailC(FILE** f,char *argv , char *argt)
 				}
 			}
 		}
+	}
+}
 
-		fclose(*f);
+int countchar(FILE** f)
+{
+	int c ;
+	char cara;
+	while((cara=fgetc(*f))!=EOF)
+	{
+		c++;
+	}
+	return c ;
+}
+
+void tailC(FILE** f,char *argv , int n)
+{
+	char car;
+	char cara;
+	int i ;
+	int j ;
+	int k ;
+	k = atoi(argv);
+	j=n-k;
+	rewind(*f);
+
+	while((cara=fgetc(*f))!=EOF)
+	{
+		i++;
+		if(i>=j)
+		{
+			while(!feof(*f))
+			{
+				car=fgetc(*f);
+				printf("%c",car);
+			}
+		}
 	}
 
 }
 
-void tailQ1(FILE** f,char *argv)
+void tailQ(FILE** f)
 {
 	char car;
 
-	*f=fopen(argv,"r");
-
-	if(*f==NULL)
+	while(!feof(*f))
 	{
-		printf("Erreur lors de l'ouverture fic1");
-		exit (0);
+		car=fgetc(*f);
+		printf("%c",car);
 	}
 
-	else
-	{
-		while(!feof(*f))
-		{
-			car=fgetc(*f);
-			printf("%c",car);
-		}
-	}
-
-	fclose(*f);
-
-}
-
-void tailQ2(FILE** f,char *argv)
-{
-	char car;
-
-	*f=fopen(argv,"r");
-
-	if(*f==NULL)
-	{
-		printf("Erreur lors de l'ouverture fic2");
-		exit (0);
-	}
-
-	else
-	{
-		while(!feof(*f))
-		{
-			car=fgetc(*f);
-			printf("%c",car);
-		}
-	}
-
-	fclose(*f);
-}
-
-void helptail(FILE** f)
-{
-	char car;
-	*f=fopen("helptail.txt","r");
-	if(*f==NULL)
-	{
-		printf("Erreur lors de l'ouverture");
-		exit (0);
-	}
-	else{
-		while(!feof(*f))
-		{
-			car=fgetc(*f);
-			printf("%c",car);
-		}
-	}
-	fclose(*f);
 }
 
 void tailV(char* argv)
 {
 	printf("==> %s <==",argv);
 }
-
